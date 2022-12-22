@@ -12,25 +12,27 @@ async function InterestCall() {
     const url = 'https://api.api-ninjas.com/v1/interestrate?name=FED';
     //create a variable that holds the api key
     const key = 'EgblJ/SG7llo3LZLCjflNA==cuJk0yMor51txbH3';
-    
-    //create a variable that holds the fetch request\
-    const request = new Request(url, {
+
+    //use fetch to call the api
+    const response = await fetch(url, {
         method: 'GET',
-        headers: new Headers({
+        headers: {
+            'Content-Type': 'application/json',
             'X-Api-Key': key
-        })
+        }
     });
+    //use json to convert the response to json
+    const data = await response.json();
+    //return the data  
 
-    //create a variable that holds the response
-    const response = await fetch(request);
-    //create a variable that holds the json
-    const json = response.json();
-    //create a variable that holds the data
-    //create a variable that holds the interest rate
-    const interestRate = data.central_bank_rates[0].rate_pct;
-
-    //return the interest rate
-    return interestRate;
+    console.log(data)
+    //return the json data in a div
+    return (
+        <div>
+            <h1>Interest Rate</h1>
+            <p>{data}</p>
+        </div>
+    );
 }
 
 //export the function
