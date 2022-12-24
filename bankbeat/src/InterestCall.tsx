@@ -7,7 +7,11 @@ import {useState, useEffect} from 'react';
 //create a function that calls the api
 async function InterestCall() {
     //create a variable that holds the api url
-
+    const state = {
+        data: [],
+        isLoading: true,
+        errors: null
+    }
     
     const url = 'https://api.api-ninjas.com/v1/interestrate?name=FED';
     //create a variable that holds the api key
@@ -21,19 +25,22 @@ async function InterestCall() {
             'X-Api-Key': key
         }
     });
+    
     //use json to convert the response to json
     const data = await response.json();
     //return the data  
-
+    //change the state once data is retrieved
+    state.data = data;
+    state.isLoading = false;
+    
     console.log(data)
     //return the json data in a div
     return (
-        <div>
-            <h1>Interest Rate</h1>
-            <p>{data}</p>
-        </div>
+        {data}
     );
+
 }
 
 //export the function
+export default InterestCall;
 
