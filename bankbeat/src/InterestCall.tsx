@@ -1,46 +1,54 @@
-import React from 'react';
-import ReactDOM from "react-dom";
-import {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
-//generate a page that calls upon this api: https://api.api-ninjas.com/v1/interestrate?name=FED
+function InterestRateApp() {
+  // State variables to store the current interest rate and rating
+  const [interestRate, setInterestRate] = useState(0);
+  const [rating, setRating] = useState(0);
 
-//create a function that calls the api
-async function InterestCall() {
-    //create a variable that holds the api url
-    const state = {
-        data: [],
-        isLoading: true,
-        errors: null
-    }
-    
-    const url = 'https://api.api-ninjas.com/v1/interestrate?name=FED';
+  // Fetch the current interest rate from the API when the component mounts
+  useEffect(() => {
+    async function fetchData() {
+      const url = 'https://api.api-ninjas.com/v1/interestrate?name=FED';
     //create a variable that holds the api key
-    const key = 'EgblJ/SG7llo3LZLCjflNA==cuJk0yMor51txbH3';
-
-    //use fetch to call the api
-    const response = await fetch(url, {
+      const key = 'EgblJ/SG7llo3LZLCjflNA==cuJk0yMor51txbH3';
+      const response =  await fetch(url, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'X-Api-Key': key
         }
-    });
+    }
     
-    //use json to convert the response to json
-    const data = await response.json();
-    //return the data  
-    //change the state once data is retrieved
-    state.data = data;
-    state.isLoading = false;
-    
-    console.log(data)
-    //return the json data in a div
-    return (
-        {data}
     );
+      const data = await response.json();
+      setInterestRate(data.rate);
 
+      // Calculate the rating based on the current interest rate
+      if (data.rate < 3) {
+        setRating(1);
+      } else if (data.rate < 5) {
+        setRating(3);
+      } else if (data.rate < 7) {
+        setRating(5);
+      } else if (data.rate < 9) {
+        setRating(7);
+      } else {
+        setRating(10);
+      }
+    }
+
+
+    //print out the result of the fetch call
+    console.log(fetchData());
+  }, []);
+
+  return (
+    <div>
+      {/* Display the current interest rate and rating */}
+      <p>Current interest rate: {interestRate}</p>
+      <p>Rating: {rating}/10</p>
+    </div>
+  );
 }
 
-//export the function
-export default InterestCall;
-
+export default InterestRateApp;
