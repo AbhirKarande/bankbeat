@@ -21,20 +21,21 @@ function InterestRateApp() {
     
     );
       const data = await response.json();
-      setInterestRate(data.rate);
+      setInterestRate(data['central_bank_rates'][0]['rate_pct']);
 
       // Calculate the rating based on the current interest rate
-      if (data.rate < 3) {
+      if (data['central_bank_rates'][0]['rate_pct'] < 3) {
         setRating(1);
-      } else if (data.rate < 5) {
+      } else if (data['central_bank_rates'][0]['rate_pct'] < 5) {
         setRating(3);
-      } else if (data.rate < 7) {
+      } else if (data['central_bank_rates'][0]['rate_pct'] < 7) {
         setRating(5);
-      } else if (data.rate < 9) {
+      } else if (data['central_bank_rates'][0]['rate_pct'] < 9) {
         setRating(7);
       } else {
         setRating(10);
       }
+      console.log(data['central_bank_rates'][0]['rate_pct'])
     }
 
 
